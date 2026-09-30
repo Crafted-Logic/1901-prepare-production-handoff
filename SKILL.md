@@ -62,6 +62,28 @@ Run every step you can; stop only when nothing downstream could be evidence.
    `HUMAN_REVISE`, or `HUMAN_REJECT` by its value, `soft_ip` gives
    `SOFT_IP_BLOCK`, `open_items` gives `OPEN_ITEM_BLOCK`, `documentation`
    gives `DOCUMENTATION_CONFLICT`, `budget` gives `BUDGET_BLOCK`).
+
+   A failed `source_master` check that is not the top-level reason maps by
+   its `detail`, read against the readiness skill's own source rules:
+
+   | detail says | blocker code |
+   |---|---|
+   | `render_source_path` blank or absent | `MISSING_SOURCE` |
+   | folder, wildcard, list, or several candidate files | `AMBIGUOUS_SOURCE` |
+   | thumbnail, preview, proof, mockup, web export, contact sheet, or other derived file | `SOURCE_NOT_MASTER` |
+   | path exists but approval or master status could not be verified | `SOURCE_UNVERIFIED` |
+   | the governing render-source rule itself is unresolved | `DOCUMENTATION_CONFLICT` |
+   | anything else, or unclear | `UNKNOWN_BLOCKER` |
+
+   Never invent a new code for it, and never discard it. When the detail
+   fits none of the rows confidently, it is `UNKNOWN_BLOCKER`; fail closed.
+
+   One blocker per code. When the top-level `reason_code` and a failed check
+   describe the same problem, keep one entry, not two: a top-level
+   `MISSING_HUMAN_APPROVAL` plus a failed `human_decision` check is one
+   `MISSING_HUMAN_APPROVAL` blocker, and a top-level `SOURCE_UNVERIFIED` plus
+   a failed `source_master` check mapping to `SOURCE_UNVERIFIED` is one
+   `SOURCE_UNVERIFIED` blocker.
 4. **Collect.** Put only the live evidence those checks returned into
    `evidence`, one concise `{source, fact}` per fact. One blocker per code;
    do not invent a new code when an upstream reason code already describes
@@ -289,8 +311,8 @@ Source resolved, but readiness fails on a blank `human_decision`.
   "row_number": 18,
   "status": "Approved",
   "human_decision": "",
-  "art_path": "https://drive.google.com/file/d/1FILEc3stamp000000000000000000001/view",
-  "render_source_path": "Masters/1901-003_redraw-c-stamp.png",
+  "art_path": "https://drive.google.com/file/d/1FILE017barn0000000000000000000017/view",
+  "render_source_path": "Masters/1901-017_barn-master.png",
   "render_status": "",
   "render_qa": ""
  },
@@ -298,10 +320,10 @@ Source resolved, but readiness fails on a blank `human_decision`.
   "result": "RESOLVED",
   "source_rule_status": "VERIFIED",
   "resolved_file": {
-   "drive_file_id": "1FILEc3stamp000000000000000000001",
-   "name": "1901-003_redraw-c-stamp.png",
-   "url": "https://drive.google.com/file/d/1FILEc3stamp000000000000000000001/view",
-   "folder": "1901-003 Artwork (folder id 1AbCdEfGhIjKlMnOpQrStUvWxYz012345)",
+   "drive_file_id": "1FILE017barn0000000000000000000017",
+   "name": "1901-017_barn-master.png",
+   "url": "https://drive.google.com/file/d/1FILE017barn0000000000000000000017/view",
+   "folder": "1901-017 Artwork (folder id 1FoLdEr017000000000000000000000000)",
    "mime_type": "image/png",
    "reason": "named by art_path and tied to the approval note"
   },
@@ -317,14 +339,14 @@ Source resolved, but readiness fails on a blank `human_decision`.
  },
  "handoff_package": {
   "approved_source_file": {
-   "drive_file_id": "1FILEc3stamp000000000000000000001",
-   "name": "1901-003_redraw-c-stamp.png",
-   "url": "https://drive.google.com/file/d/1FILEc3stamp000000000000000000001/view",
-   "folder": "1901-003 Artwork (folder id 1AbCdEfGhIjKlMnOpQrStUvWxYz012345)",
+   "drive_file_id": "1FILE017barn0000000000000000000017",
+   "name": "1901-017_barn-master.png",
+   "url": "https://drive.google.com/file/d/1FILE017barn0000000000000000000017/view",
+   "folder": "1901-017 Artwork (folder id 1FoLdEr017000000000000000000000000)",
    "mime_type": "image/png"
   },
   "design_metadata": {
-   "concept": "Autumn Porch Cat",
+   "concept": "Harvest Moon Barn",
    "season": "Fall",
    "style": "Vintage",
    "vibe": "Cozy"
@@ -345,11 +367,11 @@ Source resolved, but readiness fails on a blank `human_decision`.
  "evidence": [
   {
    "source": "Idea Queue row 18",
-   "fact": "status = Approved; human_decision = blank; render_source_path = Masters/1901-003_redraw-c-stamp.png"
+   "fact": "status = Approved; human_decision = blank; render_source_path = Masters/1901-017_barn-master.png"
   },
   {
    "source": "1901-resolve-production-source",
-   "fact": "RESOLVED: 1901-003_redraw-c-stamp.png"
+   "fact": "RESOLVED: 1901-017_barn-master.png"
   },
   {
    "source": "1901-validate-readiness",
@@ -442,8 +464,8 @@ Source resolved; readiness reports an active soft-IP concern from Ame.
   "row_number": 41,
   "status": "Approved",
   "human_decision": "APPROVE",
-  "art_path": "https://drive.google.com/file/d/1FILEc3stamp000000000000000000001/view",
-  "render_source_path": "Masters/1901-003_redraw-c-stamp.png",
+  "art_path": "https://drive.google.com/file/d/1FILE040diner000000000000000000040/view",
+  "render_source_path": "Masters/1901-040_diner-sign-master.png",
   "render_status": "",
   "render_qa": ""
  },
@@ -451,10 +473,10 @@ Source resolved; readiness reports an active soft-IP concern from Ame.
   "result": "RESOLVED",
   "source_rule_status": "VERIFIED",
   "resolved_file": {
-   "drive_file_id": "1FILEc3stamp000000000000000000001",
-   "name": "1901-003_redraw-c-stamp.png",
-   "url": "https://drive.google.com/file/d/1FILEc3stamp000000000000000000001/view",
-   "folder": "1901-003 Artwork (folder id 1AbCdEfGhIjKlMnOpQrStUvWxYz012345)",
+   "drive_file_id": "1FILE040diner000000000000000000040",
+   "name": "1901-040_diner-sign-master.png",
+   "url": "https://drive.google.com/file/d/1FILE040diner000000000000000000040/view",
+   "folder": "1901-040 Artwork (folder id 1FoLdEr040000000000000000000000000)",
    "mime_type": "image/png",
    "reason": "named by art_path and tied to the approval note"
   },
@@ -470,21 +492,21 @@ Source resolved; readiness reports an active soft-IP concern from Ame.
  },
  "handoff_package": {
   "approved_source_file": {
-   "drive_file_id": "1FILEc3stamp000000000000000000001",
-   "name": "1901-003_redraw-c-stamp.png",
-   "url": "https://drive.google.com/file/d/1FILEc3stamp000000000000000000001/view",
-   "folder": "1901-003 Artwork (folder id 1AbCdEfGhIjKlMnOpQrStUvWxYz012345)",
+   "drive_file_id": "1FILE040diner000000000000000000040",
+   "name": "1901-040_diner-sign-master.png",
+   "url": "https://drive.google.com/file/d/1FILE040diner000000000000000000040/view",
+   "folder": "1901-040 Artwork (folder id 1FoLdEr040000000000000000000000000)",
    "mime_type": "image/png"
   },
   "design_metadata": {
-   "concept": "Autumn Porch Cat",
-   "season": "Fall",
+   "concept": "Main Street Diner Sign",
+   "season": "Summer",
    "style": "Vintage",
    "vibe": "Cozy"
   },
   "printify_id": "",
   "etsy_url": "",
-  "notes": "Approved: Redraw C stamp remaster"
+  "notes": "Approved: diner sign v3"
  },
  "blockers": [
   {
@@ -498,11 +520,11 @@ Source resolved; readiness reports an active soft-IP concern from Ame.
  "evidence": [
   {
    "source": "Idea Queue row 41",
-   "fact": "status = Approved; human_decision = APPROVE; render_source_path = Masters/1901-003_redraw-c-stamp.png"
+   "fact": "status = Approved; human_decision = APPROVE; render_source_path = Masters/1901-040_diner-sign-master.png"
   },
   {
    "source": "1901-resolve-production-source",
-   "fact": "RESOLVED: 1901-003_redraw-c-stamp.png"
+   "fact": "RESOLVED: 1901-040_diner-sign-master.png"
   },
   {
    "source": "1901-validate-readiness",
@@ -649,7 +671,7 @@ Blank `human_decision`, an unresolved Open Item, and two candidate source files.
   "row_number": 46,
   "status": "Approved",
   "human_decision": "",
-  "art_path": "https://drive.google.com/file/d/1FILEc3stamp000000000000000000001/view",
+  "art_path": "https://drive.google.com/file/d/1FILE045lantern0000000000000000045/view",
   "render_source_path": "",
   "render_status": "",
   "render_qa": ""
@@ -660,15 +682,15 @@ Blank `human_decision`, an unresolved Open Item, and two candidate source files.
   "resolved_file": null,
   "candidates": [
    {
-    "drive_file_id": "1FILEc3stamp000000000000000000001",
-    "name": "1901-003_redraw-c-stamp.png",
-    "url": "https://drive.google.com/file/d/1FILEc3stamp000000000000000000001/view",
-    "reason": "matches 'Redraw C stamp' in the approval note"
+    "drive_file_id": "1FILE045lantern0000000000000000045",
+    "name": "1901-045_lantern.png",
+    "url": "https://drive.google.com/file/d/1FILE045lantern0000000000000000045/view",
+    "reason": "matches 'lantern' in the approval note"
    },
    {
-    "drive_file_id": "1FILEc3remas000000000000000000003",
-    "name": "1901-003_redraw-c-stamp-remaster.png",
-    "url": "https://drive.google.com/file/d/1FILEc3remas000000000000000000003/view",
+    "drive_file_id": "1FILE045remas00000000000000000046",
+    "name": "1901-045_lantern-remaster.png",
+    "url": "https://drive.google.com/file/d/1FILE045remas00000000000000000046/view",
     "reason": "matches 'remaster' in the approval note"
    }
   ],
@@ -684,14 +706,14 @@ Blank `human_decision`, an unresolved Open Item, and two candidate source files.
  "handoff_package": {
   "approved_source_file": null,
   "design_metadata": {
-   "concept": "Autumn Porch Cat",
-   "season": "Fall",
+   "concept": "Winter Porch Lantern",
+   "season": "Winter",
    "style": "Vintage",
    "vibe": "Cozy"
   },
   "printify_id": "",
   "etsy_url": "",
-  "notes": "Approved: Redraw C stamp remaster"
+  "notes": "Approved: lantern remaster"
  },
  "blockers": [
   {
